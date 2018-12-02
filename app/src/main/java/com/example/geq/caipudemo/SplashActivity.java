@@ -1,21 +1,16 @@
 package com.example.geq.caipudemo;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 
-import com.example.geq.caipudemo.utils.Constants;
-import com.example.geq.caipudemo.utils.SharedPreferencesUtils;
+import com.example.geq.caipudemo.view.CommentPageActivity;
 import com.example.geq.caipudemo.view.DishesInfosActivity;
 
 public class SplashActivity extends Activity {

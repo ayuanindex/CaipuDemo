@@ -1,15 +1,15 @@
 package com.example.geq.caipudemo.vo;
 
-public class vegetableinfo {
+public class Vegetableinfo {
     private String typepic;
     private String description;
     private String typeid;
     private String typename;
 
-    public vegetableinfo() {
+    public Vegetableinfo() {
     }
 
-    public vegetableinfo(String typepic, String description, String typeid, String typename) {
+    public Vegetableinfo(String typepic, String description, String typeid, String typename) {
         this.typepic = typepic;
         this.description = description;
         this.typeid = typeid;

@@ -1,32 +1,37 @@
-package com.example.geq.caipudemo.utils;
+package com.example.geq.caipudemo.tool;
 
-import com.example.geq.caipudemo.vo.menuinfo;
-import com.example.geq.caipudemo.vo.request_menu;
+import com.example.geq.caipudemo.vo.Menuinfo;
+import com.example.geq.caipudemo.vo.Request_menu;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * 2.根据分类的 ID 检索菜谱列表
  */
 
 public class Http_menus {
-    private static List<menuinfo> menuinfoList=new ArrayList<menuinfo>();
+    private static List<Menuinfo> menuinfoList=null;
     private static HttpURLConnection connection;
     private static InputStream is;
     private static ByteArrayOutputStream baos;
+    private static String param;
+    private static PrintWriter out;
 
-    public static List<menuinfo> getmenus(request_menu request){
+    public static List<Menuinfo> getmenus(Request_menu request){
         URL url;
         try {
             url = new URL(values.Http_mmenus);
@@ -38,12 +43,22 @@ public class Http_menus {
             connection.setDoOutput(true);
             connection.setDoInput(true);
             connection.setUseCaches(false);
-            StringBuffer stringBuffer=new StringBuffer();
-            stringBuffer.append("typecid=").append(request.getTypeid()).append("&").append("startid=").append(request.getStartid()).append("&").append("pagesize=").append(request.getPagesize());
-            byte[] bytes = stringBuffer.toString().getBytes();
+            JSONObject object = new JSONObject();
+            try {
+               // object.put("pagesize",""+request.getPagesize());
+                //object.put("stratid", ""+request.getStartid());
+                object.put("typeid",request.getTypeid());
+                param = object.toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            System.out.println(param);
+            byte[] bytes = param.getBytes();
             connection.setRequestProperty("Content-Length", String.valueOf(bytes.length));
             OutputStream outputStream = connection.getOutputStream();
             outputStream.write(bytes);
+            menuinfoList=new ArrayList<Menuinfo>();
+            System.out.println("code:   "+connection.getResponseCode());
             if (connection.getResponseCode() == 200) {
                 is = connection.getInputStream();
                 baos = new ByteArrayOutputStream();
@@ -68,8 +83,8 @@ public class Http_menus {
                     String menuid = menu.getString("menuid");
                     String typeid = menu.getString("typeid");
                     String likes = menu.getString("likes");
-                    menuinfo menuinfo=new menuinfo(spic,assistmaterial,notlikes,menuname,abstracts,mainmaterial,menuid,typeid,likes);
-                    menuinfoList.add(menuinfo);
+                    Menuinfo Menuinfo =new Menuinfo(spic,assistmaterial,notlikes,menuname,abstracts,mainmaterial,menuid,typeid,likes);
+                    menuinfoList.add(Menuinfo);
                 }
             }
         } catch (MalformedURLException e) {
@@ -89,5 +104,16 @@ public class Http_menus {
             }
            return menuinfoList;
         }
+    }
+    private String JsonGet(String name, String pass) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put("name", name);
+            object.put("pass", pass);
+            return object.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     }

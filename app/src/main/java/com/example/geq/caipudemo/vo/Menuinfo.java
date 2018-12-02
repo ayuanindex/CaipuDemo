@@ -1,6 +1,6 @@
 package com.example.geq.caipudemo.vo;
 
-public class menuinfo {
+public class Menuinfo {
     private String spic;
     private String assistmaterial;
     private String notlikes;
@@ -11,10 +11,10 @@ public class menuinfo {
     private String typeid;
     private String likes;
 
-    public menuinfo() {
+    public Menuinfo() {
     }
 
-    public menuinfo(String spic, String assistmaterial, String notlikes, String menuname, String abstracts, String mainmaterial, String menuid, String typeid, String likes) {
+    public Menuinfo(String spic, String assistmaterial, String notlikes, String menuname, String abstracts, String mainmaterial, String menuid, String typeid, String likes) {
         this.spic = spic;
         this.assistmaterial = assistmaterial;
         this.notlikes = notlikes;

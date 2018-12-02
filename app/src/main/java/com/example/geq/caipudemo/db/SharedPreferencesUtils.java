@@ -1,4 +1,4 @@
-package com.example.geq.caipudemo.utils;
+package com.example.geq.caipudemo.db;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,6 +19,9 @@ public class SharedPreferencesUtils {
         }
         return  sp.getBoolean(key,defvalue);
     }
+
+
+
 
 
 }

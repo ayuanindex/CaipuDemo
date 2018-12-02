@@ -9,12 +9,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
+            android:textColor="#000000"
             android:id="@+id/item_tv_date"
             android:layout_alignParentRight="true"
             android:text="2018年12月1日"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
+            android:textColor="#000000"
             android:id="@+id/item_tv_time"
             android:layout_below="@id/item_tv_date"
             android:layout_alignParentRight="true"
@@ -33,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
+            android:textColor="#000000"
             android:id="@+id/item_tv_name"
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@+id/item_lv_icon"
@@ -40,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
+            android:textColor="#000000"
             android:id="@+id/item_tv_comment"
             android:layout_marginTop="12dp"
             android:layout_marginLeft="8dp"

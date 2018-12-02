@@ -1,9 +1,12 @@
-package com.example.geq.caipudemo.utils;
+package com.example.geq.caipudemo.tool;
+
+import android.util.Log;
 
 import com.example.geq.caipudemo.vo.MenuDetail;
 import com.example.geq.caipudemo.vo.Step;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 /**
  * 3.获取菜谱详情
  */
@@ -26,26 +30,37 @@ public class Http_menuDetail {
     private static InputStream is;
     private static ByteArrayOutputStream baos;
     private static MenuDetail menuDetail=null;
+    private static String param;
 
     public static MenuDetail getmenus(int mid){
         URL url;
         try {
             url = new URL(values.Http_menuDetail);
             connection = (HttpURLConnection)url.openConnection();
-            connection.setReadTimeout(5000);
-            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(7000);
+            connection.setConnectTimeout(7000);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             connection.setDoOutput(true);
             connection.setDoInput(true);
             connection.setUseCaches(false);
-            StringBuffer stringBuffer=new StringBuffer();
-            stringBuffer.append("menuid=").append(mid);
-            byte[] bytes = stringBuffer.toString().getBytes();
+            JSONObject object = new JSONObject();
+            try {
+                object.put("menuid",mid);
+                param = object.toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            //  System.out.println(param);
+            byte[] bytes = param.getBytes();
             connection.setRequestProperty("Content-Length", String.valueOf(bytes.length));
+
             OutputStream outputStream = connection.getOutputStream();
             outputStream.write(bytes);
+
             if (connection.getResponseCode() == 200) {
+
+
                 is = connection.getInputStream();
                 baos = new ByteArrayOutputStream();
                 int len = -1;
@@ -55,7 +70,7 @@ public class Http_menuDetail {
                 }
                 baos.flush();
                 String str = baos.toString();
-                System.out.println(str);
+                // System.out.println(str);
                 JSONObject jsonObject = new JSONObject(str);
                 JSONObject menu = jsonObject.getJSONObject("menu");
                 String spic = menu.getString("spic");
@@ -74,7 +89,7 @@ public class Http_menuDetail {
                     String description = step.getString("description");
                     String menuid1 = step.getString("menuid");
                     String pic = step.getString("pic");
-                    //menuinfo menuinfo=new menuinfo(spic,assistmaterial,notlikes,menuname,abstracts,mainmaterial,menuid,typeid,likes);
+                    //Menuinfo Menuinfo=new Menuinfo(spic,assistmaterial,notlikes,menuname,abstracts,mainmaterial,menuid,typeid,likes);
                     Step step1=new Step(stepid,description,menuid1,pic);
                     stepList.add(step1);
                 }
@@ -95,7 +110,8 @@ public class Http_menuDetail {
                     e.printStackTrace();
                 }
             }
-           return menuDetail;
+
+            return menuDetail;
         }
     }
-    }
+}

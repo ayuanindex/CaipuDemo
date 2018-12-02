@@ -1,14 +1,14 @@
 package com.example.geq.caipudemo.vo;
 
-public class request_menu {
+public class Request_menu {
     private int typeid;
     private int startid;
     private int pagesize;
 
-    public request_menu() {
+    public Request_menu() {
     }
 
-    public request_menu(int typeid, int startid, int pagesize) {
+    public Request_menu(int typeid, int startid, int pagesize) {
         this.typeid = typeid;
         this.startid = startid;
         this.pagesize = pagesize;

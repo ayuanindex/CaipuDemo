@@ -1,6 +1,6 @@
-package com.example.geq.caipudemo.utils;
+package com.example.geq.caipudemo.tool;
 
-import com.example.geq.caipudemo.vo.vegetableinfo;
+import com.example.geq.caipudemo.vo.Vegetableinfo;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,17 +14,19 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 /**
  *1.取得菜谱分类的接口
  */
 
 public class Http_Vegetable{
-    private static List<vegetableinfo> vegetablelist=new ArrayList<>();
+    private static List<Vegetableinfo> vegetablelist=null;
     private static HttpURLConnection connection;
     private static InputStream is;
     private static ByteArrayOutputStream baos;
 
-    public static List<vegetableinfo> getVegetable(){
+    public static List<Vegetableinfo> getVegetable(){
         URL url;
         try {
             url = new URL(values.Http_Vegetable);
@@ -45,19 +47,18 @@ public class Http_Vegetable{
                 }
                 baos.flush();
                 String str = baos.toString();
-                System.out.println(str);
                 JSONObject jsonObject = new JSONObject(str);
                 JSONArray types = jsonObject.getJSONArray("types");
+                vegetablelist=new ArrayList<Vegetableinfo>();
                 for(int i=0;i<types.length();i++){
                     JSONObject type = types.getJSONObject(i);
                     String typepic = type.getString("typepic");
                     String description = type.getString("description");
                     String typeid = type.getString("typeid");
                     String typename = type.getString("typename");
-                    vegetableinfo vegetableinfo=new vegetableinfo(typepic,description,typeid,typename);
-                    vegetablelist.add(vegetableinfo);
+                    Vegetableinfo Vegetableinfo =new Vegetableinfo(typepic,description,typeid,typename);
+                    vegetablelist.add(Vegetableinfo);
                 }
-                System.out.println(vegetablelist.size());
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();

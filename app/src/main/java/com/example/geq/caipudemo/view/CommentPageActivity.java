@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,21 +15,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.geq.caipudemo.R;
-import com.example.geq.caipudemo.utils.Http_comments;
-import com.example.geq.caipudemo.vo.comment;
+import com.example.geq.caipudemo.tool.Http_comments;
+import com.example.geq.caipudemo.tool.Http_postComment;
+import com.example.geq.caipudemo.vo.Comment;
+
 
 import java.util.List;
 
 
 public class CommentPageActivity extends Activity implements View.OnClickListener {
+    private int menuid;
     private TextView mName;
-    private ImageView  mIcon;
+    private ImageView mIcon;
     private ListView mListView;
     private TextView mComment;
-    private  Button mSend;
-    private List<comment> commentList;
+    private Button mSend;
+    private List<Comment> commentList;
+    private boolean flag;
     //评论结合
-    private List list;
 
 
     @Override
@@ -55,48 +59,84 @@ public class CommentPageActivity extends Activity implements View.OnClickListene
     private void initData() {
         //获取传递管理的菜品id
         Intent intent = getIntent();
-        int menuid = intent.getIntExtra("menuid", 0);
-        if (1>0){
-            commentList = Http_comments.getcomments(menuid);
+        menuid = intent.getIntExtra("menuid", 0);
+        if (menuid >= 0) {
+            Log.e("------------", "initData: " + menuid);
+            new Thread() {
+                @Override
+                public void run() {
+                    commentList = Http_comments.getcomments(1);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mListView.setAdapter(new MyAdpater());
+                        }
+                    });
+                }
+            }.start();
+
+
         }
     }
 
     @Override
     public void onClick(View v) {
+        flag = false;
         //获取评论文本框内容
         String comment = mComment.getText().toString().trim();
-        if (TextUtils.isEmpty(comment)){
+        if (TextUtils.isEmpty(comment)) {
             Toast.makeText(this, "请输入评论！", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             // sendComment发送评论 ,true 成功 ，false 失败
             //menuid  菜谱编号
             //comment  评论内容
-            boolean result = sendComment(1, comment);
-            if(result){
-                Toast.makeText(this, "评论成功！", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(this, "评论失败！", Toast.LENGTH_SHORT).show();
-            }
+            sendComment(1, comment);
+
+
         }
     }
 
-    private boolean sendComment(int menuid, String comment) {
+    private void sendComment(final int menuid, final String comment) {
+        new Thread(){
+            @Override
+            public void run() {
+                String result = Http_postComment.support(menuid, comment);
+                Log.e("----------", "run: "+result );
+                if (result.equals("ok")){
+                    Log.e("----------", "-----------run: "+result );
 
-        return true;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(CommentPageActivity.this, "评论成功！", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    });
+
+                }else{
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(CommentPageActivity.this, "评论失败！", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    });
+                }
+            }
+        }.start();
     }
 
 
-
-    public class MyAdpater extends BaseAdapter{
+    public class MyAdpater extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return list.size();
+            return commentList.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return list.get(position);
+            return commentList.get(position);
         }
 
         @Override
@@ -106,32 +146,38 @@ public class CommentPageActivity extends Activity implements View.OnClickListene
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder ;
-            if (convertView==null){
-                convertView  = View.inflate(getApplicationContext(), R.layout.comment_page_item, null);
+            ViewHolder viewHolder;
+            if (convertView == null) {
+                convertView = View.inflate(getApplicationContext(), R.layout.comment_page_item, null);
                 viewHolder = new ViewHolder();
                 viewHolder.mDate = convertView.findViewById(R.id.item_tv_date);
                 viewHolder.mTime = convertView.findViewById(R.id.item_tv_time);
                 viewHolder.mName = convertView.findViewById(R.id.item_tv_name);
                 viewHolder.mComment = convertView.findViewById(R.id.item_tv_comment);
-                viewHolder.mIcon = convertView.findViewById(R.id.item_lv_icon);
-            }else{
+                convertView.setTag(viewHolder);
+            } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-            Object item = getItem(position);
-            viewHolder.mDate.setText(item.toString());
-            viewHolder.mTime.setText(item.toString());
-            viewHolder.mName.setText(item.toString());
-            viewHolder.mDate.setText(item.toString());
-
+            //首页评论列表
+            Comment comment = (com.example.geq.caipudemo.vo.Comment) getItem(position);
+            //评论日期
+            String year = (comment.getYear() == null ? "2018" : comment.getYear()+"年");
+            String month = (comment.getMonth() == null ? "12" : comment.getMonth()+"月");
+            String day = (comment.getDay() == null ? "1" : comment.getDay()+"日");
+            viewHolder.mDate.setText(year+month+day);
+            //评论时间
+            viewHolder.mTime.setText(comment.getHours() == null ? "10:12 TM" : comment.getHours()+" TM");
+            //评论id
+            viewHolder.mName.setText(comment.getTime()== null ? "Mary Cho" : comment.getTime());
+            //评论内容
+            viewHolder.mComment.setText(comment.getContent() == null ? "好吃好吃！" : comment.getContent());
 
             return convertView;
         }
     }
 
     public class ViewHolder {
-        TextView mDate ,mTime,mName,mComment;
-        ImageView mIcon;
+        TextView mDate, mTime, mName, mComment;
     }
 
 }

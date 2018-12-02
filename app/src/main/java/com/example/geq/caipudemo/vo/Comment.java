@@ -1,9 +1,8 @@
 package com.example.geq.caipudemo.vo;
 
-public class comment {
+public class Comment {
     private String menuid;
     private String region;
-    private String ptime;
     private String date;
     private String hours;
     private String seconds;
@@ -14,11 +13,12 @@ public class comment {
     private String minutes;
     private String time;
     private String day;
+    private String content;
+    private int cid;
 
-    public comment(String menuid, String region, String ptime, String date, String hours, String seconds, String month, String nanos, String timezoneOffset, String year, String minutes, String time, String day) {
+    public Comment(String menuid, String region, String date, String hours, String seconds, String month, String nanos, String timezoneOffset, String year, String minutes, String time, String day, String content, int cid) {
         this.menuid = menuid;
         this.region = region;
-        this.ptime = ptime;
         this.date = date;
         this.hours = hours;
         this.seconds = seconds;
@@ -29,9 +29,26 @@ public class comment {
         this.minutes = minutes;
         this.time = time;
         this.day = day;
+        this.content = content;
+        this.cid = cid;
+    }
+    public Comment() {
     }
 
-    public comment() {
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int getCid() {
+        return cid;
+    }
+
+    public void setCid(int cid) {
+        this.cid = cid;
     }
 
     public String getMenuid() {
@@ -48,14 +65,6 @@ public class comment {
 
     public void setRegion(String region) {
         this.region = region;
-    }
-
-    public String getPtime() {
-        return ptime;
-    }
-
-    public void setPtime(String ptime) {
-        this.ptime = ptime;
     }
 
     public String getDate() {
