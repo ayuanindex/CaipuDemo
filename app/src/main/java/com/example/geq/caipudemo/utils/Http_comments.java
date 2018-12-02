@@ -15,8 +15,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import vo.comment;
-
 /**
  *5.取得评论
  */

@@ -1,5 +1,7 @@
 package com.example.geq.caipudemo.utils;
 
+import com.example.geq.caipudemo.vo.vegetableinfo;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,8 +13,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import vo.vegetableinfo;
 
 /**
  *1.取得菜谱分类的接口

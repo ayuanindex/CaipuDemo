@@ -1,5 +1,8 @@
 package com.example.geq.caipudemo.utils;
 
+import com.example.geq.caipudemo.vo.menuinfo;
+import com.example.geq.caipudemo.vo.request_menu;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,9 +15,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import vo.menuinfo;
-import vo.request_menu;
 
 /**
  * 2.根据分类的 ID 检索菜谱列表

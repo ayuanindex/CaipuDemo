@@ -61,7 +61,7 @@
            <TextView
                android:id="@+id/dishesinfos_tv_info"
                android:layout_marginTop="5dp"
-               android:text="1、盆中装入凉水，加入一大勺料酒，放入五花肉，浸泡15分钟。2、五花肉放入热水锅里焯一下，捞出。"
+               android:text="1、盆中装入凉水，加入一大勺料酒，，捞出。"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" />
            <TextView
@@ -72,7 +72,7 @@
            <TextView
                android:id="@+id/dishesinfos_tv_foods"
                android:layout_marginTop="5dp"
-               android:text="带皮五花肉600克、白萝卜一根、八角（大料）1-2个、桂皮1小块、姜3片克、香葱2根克、冰糖5粒、料酒1汤匙（15ml）、老抽1汤匙、生抽1汤匙（15ml）、盐1小匙。"
+               android:text="带皮五花肉60、老抽1汤匙、生抽1汤匙（15ml）、盐1小匙。"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" />
        </LinearLayout>

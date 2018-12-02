@@ -2,6 +2,7 @@ package com.example.geq.caipudemo.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.example.geq.caipudemo.R;
 import com.example.geq.caipudemo.utils.Http_comments;
 import com.example.geq.caipudemo.utils.Http_menuDetail;
+import com.example.geq.caipudemo.utils.getdrawable;
 import com.example.geq.caipudemo.vo.MenuDetail;
 import com.example.geq.caipudemo.vo.Step;
 import com.example.geq.caipudemo.vo.comment;
@@ -57,30 +59,59 @@ public class DishesInfosActivity extends Activity  implements View.OnClickListen
         mUnlike = findViewById(R.id.dishesinfos_iv_unlike);
         //评论的点击事件
         mEvaluate.setOnClickListener(this);
+        //喜欢的点击事件
+        mLike.setOnClickListener(this);
+        //不喜欢的点击事件
+        mUnlike.setOnClickListener(this);
     }
 
     //初始化数据，展示数据
     private void initData() {
+        //获取传递管理的菜品id
         Intent intent = getIntent();
-        //根据菜品id,获取菜谱信息
         int menuid = intent.getIntExtra("menuid", 0);
-        if (menuid>0){
+        if (1>0){
+            //根据菜品id,获取菜谱信息
             menuDetail = Http_menuDetail.getmenus(menuid);
-            menuDetail.getSteps();
+            stepList = menuDetail.getSteps();
             MyAdpater myAdpater = new MyAdpater();
+            //菜单详情设置
+            setMenuInfo();
+            //展示菜品步骤
             mLstview.setAdapter(myAdpater);
         }
     }
 
-
-
+    //菜单详情设置
+    private void setMenuInfo() {
+        mName.setText(menuDetail.getMenuname());
+        String spic = menuDetail.getSpic();
+        getdrawable getdrawable = new getdrawable();
+        Drawable drawable = getdrawable.getdrawable(spic, DishesInfosActivity.this);
+        mIcon.setImageDrawable(drawable);
+        mType.setText("");
+        mInfo.setText(menuDetail.getAbstracts());
+        mFoods.setText(menuDetail.getMainmaterial());
+    }
 
 
     //评论点击事件
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this,CommentPageActivity.class);
-        startActivity(intent);
+        switch (v.getId()){
+            case R.id.dishesinfos_iv_evaluate:
+                //评论跳转
+                Intent intent = new Intent(this,CommentPageActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.dishesinfos_iv_like:
+                //喜欢
+                break;
+            case R.id.dishesinfos_iv_unlike:
+                //不喜欢
+                break;
+        }
+
     }
 
 
@@ -119,7 +150,10 @@ public class DishesInfosActivity extends Activity  implements View.OnClickListen
             viewHolder.mCode.setText(step.getStepid());
             viewHolder.mText.setText(step.getDescription());
             viewHolder.mTime.setText("8:33 TM");
-          //  viewHolder.mIcon.
+            String pic = step.getPic();
+            getdrawable getdrawable = new getdrawable();
+            Drawable drawable = getdrawable.getdrawable(pic, DishesInfosActivity.this);
+            viewHolder.mIcon.setImageDrawable(drawable);
             return convertView;
         }
     }

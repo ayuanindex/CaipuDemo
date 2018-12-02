@@ -14,13 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.geq.caipudemo.R;
+import com.example.geq.caipudemo.utils.Http_comments;
+import com.example.geq.caipudemo.vo.comment;
 
-import org.w3c.dom.Comment;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 public class CommentPageActivity extends Activity implements View.OnClickListener {
     private TextView mName;
@@ -28,6 +26,7 @@ public class CommentPageActivity extends Activity implements View.OnClickListene
     private ListView mListView;
     private TextView mComment;
     private  Button mSend;
+    private List<comment> commentList;
     //评论结合
     private List list;
 
@@ -54,13 +53,11 @@ public class CommentPageActivity extends Activity implements View.OnClickListene
 
     //初始化数据，展示数据
     private void initData() {
+        //获取传递管理的菜品id
         Intent intent = getIntent();
-        //根据菜品id,获取评论集合
-        String menuid = intent.getStringExtra("menuid");
-        if (!TextUtils.isEmpty(menuid)){
-            list = new ArrayList();
-            MyAdpater myAdpater = new MyAdpater();
-            mListView.setAdapter(myAdpater);
+        int menuid = intent.getIntExtra("menuid", 0);
+        if (1>0){
+            commentList = Http_comments.getcomments(menuid);
         }
     }
 
