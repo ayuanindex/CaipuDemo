@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="110dp">
+    
+    <RelativeLayout
+        android:padding="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/item_tv_date"
+            android:layout_alignParentRight="true"
+            android:text="2018年12月1日"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/item_tv_time"
+            android:layout_below="@id/item_tv_date"
+            android:layout_alignParentRight="true"
+            android:text="5:09 PM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_marginTop="12dp"
+        android:padding="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/item_lv_icon"
+            android:src="@drawable/ic_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/item_tv_name"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/item_lv_icon"
+            android:text="Hannahg Cho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/item_tv_comment"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/item_lv_icon"
+            android:layout_below="@id/item_tv_name"
+            android:text="so I'm trying to clone a repository from git, into a folder i know I have write access in."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</RelativeLayout>

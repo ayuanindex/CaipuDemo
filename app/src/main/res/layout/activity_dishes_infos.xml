@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/dishesinfos_tv_name"
+            android:text="红烧肉"
+            style="@style/ActivtyItemStyle" />
+        <ImageView
+            android:id="@+id/dishesinfos_iv_collect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu_add_pressed"
+            android:layout_gravity="right|center"
+            android:layout_marginRight="10dp"
+            android:clickable="true"
+            />
+    </FrameLayout>
+
+    <!--菜谱图片-->
+    <ImageView
+        android:id="@+id/dishesinfos_iv_icon"
+        android:src="@drawable/hsr"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <!--菜谱简介-->
+    <RelativeLayout
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginLeft="8dp"
+            android:id="@+id/dishesinfos_tv_type"
+            android:text="鲁菜"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:text="菜品名称"
+            android:textSize="18dp"
+            android:textColor="#000000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+       <LinearLayout
+           android:layout_marginLeft="8dp"
+           android:layout_marginTop="18dp"
+           android:layout_below="@id/dishesinfos_tv_type"
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <TextView
+               android:text="菜谱简介:"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" />
+           <TextView
+               android:id="@+id/dishesinfos_tv_info"
+               android:layout_marginTop="5dp"
+               android:text="1、盆中装入凉水，加入一大勺料酒，放入五花肉，浸泡15分钟。2、五花肉放入热水锅里焯一下，捞出。"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" />
+           <TextView
+               android:layout_marginTop="8dp"
+               android:text="食材清单:"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" />
+           <TextView
+               android:id="@+id/dishesinfos_tv_foods"
+               android:layout_marginTop="5dp"
+               android:text="带皮五花肉600克、白萝卜一根、八角（大料）1-2个、桂皮1小块、姜3片克、香葱2根克、冰糖5粒、料酒1汤匙（15ml）、老抽1汤匙、生抽1汤匙（15ml）、盐1小匙。"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" />
+       </LinearLayout>
+    </RelativeLayout>
+    <!--菜谱做法-->
+
+    <ListView
+        android:id="@+id/dishesinfos_lv_listview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </ListView>
+
+    <!--评论，喜欢，不喜欢 -->
+    <LinearLayout
+        android:layout_marginBottom="12dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:id="@+id/dishesinfos_iv_evaluate"
+            android:src="@drawable/pl"
+            android:layout_width="30dp"
+            android:layout_weight="1"
+            android:layout_height="30dp" />
+        <ImageView
+            android:src="@drawable/pl"
+            android:id="@+id/dishesinfos_iv_like"
+            android:layout_width="30dp"
+            android:layout_weight="1"
+            android:layout_height="30dp" />
+        <ImageView
+            android:src="@drawable/pl"
+            android:id="@+id/dishesinfos_iv_unlike"
+            android:layout_width="30dp"
+            android:layout_weight="1"
+            android:layout_height="30dp" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="110dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/item_tv_code"
+            android:text="步骤1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_marginTop="8dp"
+            android:id="@+id/item_tv_text"
+            android:layout_below="@id/item_tv_code"
+            android:singleLine="true"
+            android:text="so I'm trying to clone a repository from git, into a folder i know I have write access in. "
+            android:layout_width="240dp"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/item_tv_time2"
+        android:layout_alignParentBottom="true"
+        android:text="10 min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/item_lv_icon2"
+        android:padding="8dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/hsr"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
+</RelativeLayout>
