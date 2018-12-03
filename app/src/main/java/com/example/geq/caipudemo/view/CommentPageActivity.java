@@ -2,6 +2,7 @@ package com.example.geq.caipudemo.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.example.geq.caipudemo.R;
 import com.example.geq.caipudemo.tool.Http_comments;
 import com.example.geq.caipudemo.tool.Http_postComment;
+import com.example.geq.caipudemo.tool.getdrawable;
 import com.example.geq.caipudemo.vo.Comment;
 
 
@@ -32,6 +34,7 @@ public class CommentPageActivity extends Activity implements View.OnClickListene
     private Button mSend;
     private List<Comment> commentList;
     private boolean flag;
+    private Drawable drawable;
     //评论结合
 
 
@@ -59,6 +62,8 @@ public class CommentPageActivity extends Activity implements View.OnClickListene
     private void initData() {
         //获取传递管理的菜品id
         Intent intent = getIntent();
+        //图片路径
+        final String spic = intent.getStringExtra("spic");
         menuid = intent.getIntExtra("menuid", 0);
         if (menuid >= 0) {
             Log.e("------------", "initData: " + menuid);
@@ -66,9 +71,12 @@ public class CommentPageActivity extends Activity implements View.OnClickListene
                 @Override
                 public void run() {
                     commentList = Http_comments.getcomments(1);
+                    getdrawable getdrawable = new getdrawable();
+                    drawable = getdrawable.getdrawable(spic, CommentPageActivity.this);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            mIcon.setImageDrawable(drawable);
                             mListView.setAdapter(new MyAdpater());
                         }
                     });
@@ -78,6 +86,9 @@ public class CommentPageActivity extends Activity implements View.OnClickListene
 
         }
     }
+
+
+
 
     @Override
     public void onClick(View v) {

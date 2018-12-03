@@ -17,8 +17,8 @@ public class RecipeOpenhelp extends SQLiteOpenHelper {
         //创建表collect(收藏的菜品详情)
         db.execSQL("create table collect (menuid integer PRIMARY KEY AUTOINCREMENT NOT NULL,typeid intger NOT NULL,spic varchar(100),assistmaterial varchar(100),notlikes varchar(20),menuname varchar(20),abstracts varchar(100),mainmaterial varchar(100),likes varchar(10));");
         //创建表collect(收藏的菜品做法步骤)
-        db.execSQL("create table step (menuid integer PRIMARY KEY AUTOINCREMENT NOT NULL,stepid varchar(100),description varchar(100),pic varchar(100));");
-           }
+        db.execSQL("create table step (_id integer PRIMARY KEY AUTOINCREMENT NOT NULL,menuid integer,stepid varchar(100),description varchar(100),pic varchar(100));");
+    }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.geq.caipudemo.R;
 import com.example.geq.caipudemo.db.Constants;
@@ -27,6 +28,8 @@ import com.example.geq.caipudemo.vo.Step;
 
 
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 public class DishesInfosActivity extends Activity  implements View.OnClickListener {
 
@@ -46,6 +49,8 @@ public class DishesInfosActivity extends Activity  implements View.OnClickListen
     private  Recipedao recipedao;
     private MenuDetail menuDetai2;
     private  MyAdpater myAdpater;
+    private String spic;
+    private  boolean flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +78,8 @@ public class DishesInfosActivity extends Activity  implements View.OnClickListen
         mLike.setOnClickListener(this);
         //不喜欢的点击事件
         mUnlike.setOnClickListener(this);
+        //收藏的点击事件
+        mCollect.setOnClickListener(this);
     }
 
     //初始化数据，展示数据
@@ -83,7 +90,12 @@ public class DishesInfosActivity extends Activity  implements View.OnClickListen
         final int menuid = intent.getIntExtra("menuid", 1);
         String menuName = intent.getStringExtra("menuname");
         //收藏按钮初始化图标
-        setCollectIcon(menuid1);
+        setCollectIcon("1");
+//        if (collectIcon){
+//            mCollect.setImageResource(R.drawable.like);
+//        }else{
+//            mCollect.setImageResource(R.drawable.notlike);
+//        }
         if (menuid>=1){
             //是否联网
             boolean netWorkAvailable = InternetUtils.isNetWorkAvailable(DishesInfosActivity.this);
@@ -127,11 +139,12 @@ public class DishesInfosActivity extends Activity  implements View.OnClickListen
     //菜单详情设置
     private void setMenuInfo() {
         mName.setText(menuDetail.getMenuname());
-        String spic = menuDetail.getSpic();
+
+        spic = menuDetail.getSpic();
         getdrawable getdrawable = new getdrawable();
         Drawable drawable = getdrawable.getdrawable(spic, DishesInfosActivity.this);
         mIcon.setImageDrawable(drawable);
-        mType.setText("");
+        mType.setText("www");
         mInfo.setText(menuDetail.getAbstracts());
         mFoods.setText(menuDetail.getMainmaterial());
     }
@@ -144,6 +157,7 @@ public class DishesInfosActivity extends Activity  implements View.OnClickListen
             case R.id.dishesinfos_iv_evaluate:
                 //评论跳转
                 Intent intent = new Intent(this,CommentPageActivity.class);
+                intent.putExtra("spic",spic);
                 startActivity(intent);
                 break;
             case R.id.dishesinfos_iv_like:
@@ -208,36 +222,90 @@ public class DishesInfosActivity extends Activity  implements View.OnClickListen
                 break;
             case R.id.dishesinfos_iv_collect://收藏
                 //判此菜品是否收藏
-                boolean isCollect = setCollectIcon(menuid1);
-                if (isCollect){
+               // setCollectIcon(menuid1);
+                if (flag){
                     //收藏 -- 不收藏
                     //删除收藏菜品信息
-                    recipedao.delete_collect(menuid1);
+                    Log.e(TAG, "onClick: "+"取消收藏操作" );
+                    new Thread(){
+                        @Override
+                        public void run() {
+                            Boolean aBoolean = recipedao.delete_collect(menuid1);
+                            Log.e(TAG, "onClick: 菜品编号是："+menuid1 );
+                            Log.e(TAG, "数据库删除: "+aBoolean );
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    flag=false;
+                                    mCollect.setImageResource(R.drawable.notlike);
+                                }
+                            });
+                        }
+                    }.start();
+
+
                 }else{
                     //不收藏 ---收藏
                     //添加菜品信息到收藏
-                    recipedao.innest_collect(menuDetail);
+                    Log.e(TAG, "onClick: "+"已收藏操作" );
+
+                    new Thread(){
+                        @Override
+                        public void run() {
+                            final boolean  innest_collect = recipedao.innest_collect(menuDetail);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (innest_collect){
+                                            mCollect.setImageResource(R.drawable.like);
+                                            flag=true;
+                                            Toast.makeText(DishesInfosActivity.this, "收藏成功！", Toast.LENGTH_SHORT).show();
+                                        }else {
+                                            mCollect.setImageResource(R.drawable.notlike);
+                                            Toast.makeText(DishesInfosActivity.this, "收藏失败！", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+
+                        }
+                    }.start();
+                    Log.e("TAG",menuDetail.toString());
                 }
                 break;
         }
     }
 
 
-    //收藏按钮初始化操作
-    private boolean setCollectIcon(String menuid) {
+        //收藏按钮初始化操作
+    private void setCollectIcon(final String menuid) {
         //dao数据操作
         recipedao = Recipedao.getRecipedao(DishesInfosActivity.this);
         //询collect收藏表其中的一条信息
-        menuDetai2 = recipedao.select_collect(menuid);
-        if (menuDetail==null){
-            //空，数据库灭有查询到收藏信息
-            mCollect.setImageResource(R.drawable.notlike);
-            return  false;
-        }else{
-            //查询到收藏信息
-            mCollect.setImageResource(R.drawable.like);
-            return  true;
-        }
+        new Thread(){
+            @Override
+            public void run() {
+                menuDetai2 = recipedao.select_collect(menuid);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (menuDetai2==null){
+                            //空，数据库没有查询到收藏信息
+                            mCollect.setImageResource(R.drawable.notlike);
+                            Toast.makeText(DishesInfosActivity.this, "未收藏！", Toast.LENGTH_SHORT).show();
+                            flag = false;
+                        }else{
+                            //查询到收藏信息
+                            mCollect.setImageResource(R.drawable.like);
+                            Toast.makeText(DishesInfosActivity.this, "已收藏！", Toast.LENGTH_SHORT).show();
+                            flag = true;
+                        }
+                    }
+                });
+
+            }
+        }.start();
+
+
     }
 
 
