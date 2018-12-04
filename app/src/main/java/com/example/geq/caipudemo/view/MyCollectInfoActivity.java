@@ -2,10 +2,11 @@ package com.example.geq.caipudemo.view;
 
 import android.app.Activity;
 import android.content.Intent;
+
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.example.geq.caipudemo.R;
 import com.example.geq.caipudemo.db.Constants;
@@ -27,12 +27,13 @@ import com.example.geq.caipudemo.tool.Http_support;
 import com.example.geq.caipudemo.vo.MenuDetail;
 import com.example.geq.caipudemo.vo.Step;
 
-
 import java.util.List;
+
+import javax.security.auth.login.LoginException;
 
 import static android.content.ContentValues.TAG;
 
-public class DishesInfosActivity extends Activity implements View.OnClickListener {
+public class MyCollectInfoActivity extends Activity implements View.OnClickListener {
 
     private TextView mName;
     private ImageView mCollect;
@@ -44,51 +45,23 @@ public class DishesInfosActivity extends Activity implements View.OnClickListene
     private Button mEvaluate;
     private Button mLike;
     private Button mUnlike;
-    private MenuDetail menuDetail;
     private List<Step> stepList;
-    private String menuid1;
+
     private Recipedao recipedao;
     private MenuDetail menuDetai2;
     private MyAdpater myAdpater;
     private String spic;
     private boolean flag;
+    private MenuDetail menuDetail;
+    private String menuId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dishes_infos);
+        menuId = getMenuId();
         initView();
-        boolean netWorkAvailable = InternetUtils.isNetWorkAvailable(DishesInfosActivity.this);
-        if (!netWorkAvailable){
-
-            new Thread() {
-                @Override
-                public void run() {
-                    recipedao = Recipedao.getRecipedao(DishesInfosActivity.this);
-                    String menuid = getIntent().getStringExtra("menuid");
-                    Log.e(TAG, "run: "+ menuid);
-                    menuDetai2 = recipedao.select_collect(menuid);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (menuDetai2 == null) {
-                                //空，数据库没有查询到收藏信息
-                                mCollect.setImageResource(R.drawable.notlike);
-                                Toast.makeText(DishesInfosActivity.this, "无网络，无数据库！", Toast.LENGTH_SHORT).show();
-
-                            } else {
-                                //查询到收藏信息
-                                mCollect.setImageResource(R.drawable.like);
-                                Toast.makeText(DishesInfosActivity.this, "加载数据库！", Toast.LENGTH_SHORT).show();
-                                showCollectData();
-                            }
-                        }
-                    });
-
-                }
-            }.start();
-        }else {
-            initData();
-        }
+        initData();
     }
 
 
@@ -117,44 +90,54 @@ public class DishesInfosActivity extends Activity implements View.OnClickListene
     //初始化数据，展示数据
     private void initData() {
 
-        //获取传递管理的菜品id
-        Intent intent = getIntent();
-        final String menuid = intent.getStringExtra("menuid");
-        Log.e("TAG", "onClick:------------------ " + menuid);
-        String menuName = intent.getStringExtra("menuname");
         //收藏按钮初始化图标
-        setCollectIcon(menuid);
-//        if (collectIcon){
-//            mCollect.setImageResource(R.drawable.like);
-//        }else{
-//            mCollect.setImageResource(R.drawable.notlike);
-//        }
-        if (menuid != null) {
+        setCollectIcon(menuId);
+        //获取传递管理的菜品id
+        final String menuId = getMenuId();
+        Log.e(TAG, "menuId: "+menuId );
+        if (!TextUtils.isEmpty(menuId)) {
             new Thread() {
                 @Override
                 public void run() {
-                    //根据菜品id,获取菜谱信息
-                    int anInt = Integer.parseInt(menuid);
-                    menuDetail = Http_menuDetail.getmenus(anInt);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (menuDetail != null) {
-                                menuid1 = menuDetail.getMenuid();
-                                stepList = menuDetail.getSteps();
-                                myAdpater = new MyAdpater();
-                                //菜单详情设置
-                                setMenuInfo();
-                                //展示菜品步骤
-                                mLstview.setAdapter(myAdpater);
-                            }
+                    recipedao = Recipedao.getRecipedao(MyCollectInfoActivity.this);
+                    menuDetail = recipedao.select_collect(menuId);
+                    if (menuDetail != null) {
+                        //菜谱简介
+                        showCollectData();
+                        //条目步骤
+                        stepList = menuDetail.getSteps();
+                        if (stepList!=null){
+                            mLstview.setAdapter(new MyAdpater());
                         }
-                    });
+                    }
                 }
             }.start();
         }
 
     }
+    //获取菜品id
+    private String  getMenuId() {
+        Intent intent1 = getIntent();
+        return intent1.getStringExtra("menuid");
+    }
+
+
+
+
+    //加载数据库操作
+    public void showCollectData() {
+        mName.setText(menuDetail.getMenuname());
+        String spic = menuDetail.getSpic();
+        //getdrawable getdrawable = new getdrawable();
+        //Drawable drawable = getdrawable.getdrawable(spic, MyCollectInfoActivity.this);
+        //mIcon.setImageDrawable(drawable);
+        mType.setText("ZXS");
+        mInfo.setText(menuDetail.getAbstracts());
+        mFoods.setText(menuDetail.getMainmaterial());
+    }
+
+
+
 
     //菜单详情设置
     private void setMenuInfo() {
@@ -162,7 +145,7 @@ public class DishesInfosActivity extends Activity implements View.OnClickListene
 
         spic = menuDetail.getSpic();
         GetDrawable getdrawable = new GetDrawable();
-        Drawable drawable = getdrawable.getdrawable(spic, DishesInfosActivity.this);
+        Drawable drawable = getdrawable.getdrawable(spic, MyCollectInfoActivity.this);
         mIcon.setImageDrawable(drawable);
         mType.setText("www");
         mInfo.setText(menuDetail.getAbstracts());
@@ -171,7 +154,7 @@ public class DishesInfosActivity extends Activity implements View.OnClickListene
 
 
     //评论点击事件
-    @Override
+
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.dishesinfos_iv_evaluate:
@@ -179,7 +162,7 @@ public class DishesInfosActivity extends Activity implements View.OnClickListene
                 Intent intent = new Intent(this, CommentPageActivity.class);
                 Intent intent2 = getIntent();
                 String menuid = intent2.getStringExtra("menuid");
-                Log.e(TAG, "onClick: ==============="+menuid );
+                Log.e(TAG, "onClick: ===============" + menuid);
                 intent.putExtra("spic", spic);
                 intent.putExtra("menuid", menuid);
                 startActivity(intent);
@@ -192,7 +175,8 @@ public class DishesInfosActivity extends Activity implements View.OnClickListene
                     new Thread() {
                         @Override
                         public void run() {
-                            final String result = Http_support.support(Integer.parseInt(menuid1), "yes");
+                            String menuId = getMenuId();
+                            final String result = Http_support.support(Integer.parseInt(menuId), "yes");
                             Log.e("----------", "onClick: " + result);
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -222,7 +206,8 @@ public class DishesInfosActivity extends Activity implements View.OnClickListene
                     new Thread() {
                         @Override
                         public void run() {
-                            final String result = Http_support.support(Integer.parseInt(menuid1), "no");
+                            String menuId = getMenuId();
+                            final String result = Http_support.support(Integer.parseInt(menuId), "no");
                             Log.e("----------", "onClick: " + result);
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -251,14 +236,15 @@ public class DishesInfosActivity extends Activity implements View.OnClickListene
                     new Thread() {
                         @Override
                         public void run() {
-                            Boolean aBoolean = recipedao.delete_collect(menuid1);
-                            Log.e(TAG, "onClick: 菜品编号是：" + menuid1 + "   数据库删除: " + aBoolean);
+
+                            Boolean aBoolean = recipedao.delete_collect(menuId);
+                            Log.e(TAG, "onClick: 菜品编号是：" + menuId + "   数据库删除: " + aBoolean);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     flag = false;
                                     mCollect.setImageResource(R.drawable.notlike);
-                                    Toast.makeText(DishesInfosActivity.this, "已取消收藏！", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MyCollectInfoActivity.this, "已取消收藏！", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -278,10 +264,10 @@ public class DishesInfosActivity extends Activity implements View.OnClickListene
                                     if (innest_collect) {
                                         mCollect.setImageResource(R.drawable.like);
                                         flag = true;
-                                        Toast.makeText(DishesInfosActivity.this, "数据收藏成功！", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MyCollectInfoActivity.this, "数据收藏成功！", Toast.LENGTH_SHORT).show();
                                     } else {
                                         mCollect.setImageResource(R.drawable.notlike);
-                                        Toast.makeText(DishesInfosActivity.this, "数据收藏失败！", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MyCollectInfoActivity.this, "数据收藏失败！", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -297,7 +283,7 @@ public class DishesInfosActivity extends Activity implements View.OnClickListene
     //收藏按钮初始化操作
     private void setCollectIcon(final String menuid) {
         //dao数据操作
-        recipedao = Recipedao.getRecipedao(DishesInfosActivity.this);
+        recipedao = Recipedao.getRecipedao(MyCollectInfoActivity.this);
         //询collect收藏表其中的一条信息
         new Thread() {
             @Override
@@ -309,45 +295,18 @@ public class DishesInfosActivity extends Activity implements View.OnClickListene
                         if (menuDetai2 == null) {
                             //空，数据库没有查询到收藏信息
                             mCollect.setImageResource(R.drawable.notlike);
-                            Toast.makeText(DishesInfosActivity.this, "未收藏！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MyCollectInfoActivity.this, "未收藏！", Toast.LENGTH_SHORT).show();
                             flag = false;
                         } else {
                             //查询到收藏信息
                             mCollect.setImageResource(R.drawable.like);
-                            Toast.makeText(DishesInfosActivity.this, "已收藏！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MyCollectInfoActivity.this, "已收藏！", Toast.LENGTH_SHORT).show();
                             flag = true;
                         }
                     }
                 });
-
             }
         }.start();
-
-
-    }
-
-
-    //加载数据库操作
-    public void showCollectData() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (menuDetai2!=null){
-                    stepList = menuDetai2.getSteps();
-                    mName.setText(menuDetai2.getMenuname());
-                    String spic = menuDetai2.getSpic();
-                    GetDrawable getdrawable = new GetDrawable();
-                    Drawable drawable = getdrawable.getdrawable(spic, DishesInfosActivity.this);
-                    mIcon.setImageDrawable(drawable);
-                    mType.setText("");
-                    mInfo.setText(menuDetai2.getAbstracts());
-                    mFoods.setText(menuDetai2.getMainmaterial());
-                    MyAdpater myAdpater1 = new MyAdpater();
-                    mLstview.setAdapter(myAdpater1);
-                    myAdpater1.notifyDataSetChanged();
-                }
-            }
-        });
     }
 
 
@@ -379,7 +338,7 @@ public class DishesInfosActivity extends Activity implements View.OnClickListene
                 viewHolder.mIcon = convertView.findViewById(R.id.item_lv_icon2);
                 convertView.setTag(viewHolder);
             } else {
-                viewHolder = (ViewHolder) convertView.getTag();
+                viewHolder = (MyCollectInfoActivity.ViewHolder) convertView.getTag();
             }
             //步骤信息设置展示
             Step step = (Step) getItem(position);
@@ -387,9 +346,9 @@ public class DishesInfosActivity extends Activity implements View.OnClickListene
             viewHolder.mText.setText(step.getDescription());
             viewHolder.mTime.setText("8:33 TM");
             String pic = step.getPic();
-            GetDrawable getdrawable = new GetDrawable();
-            Drawable drawable = getdrawable.getdrawable(pic, DishesInfosActivity.this);
-            viewHolder.mIcon.setImageDrawable(drawable);
+//            getdrawable getdrawable = new getdrawable();
+//            Drawable drawable = getdrawable.getdrawable(pic, MyCollectInfoActivity.this);
+//            viewHolder.mIcon.setImageDrawable(drawable);
             return convertView;
         }
     }
@@ -399,4 +358,9 @@ public class DishesInfosActivity extends Activity implements View.OnClickListene
         ImageView mIcon;
     }
 
+    @Override
+    protected void onDestroy() {
+        setResult(1);
+        super.onDestroy();
+    }
 }

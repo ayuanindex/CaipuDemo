@@ -44,6 +44,8 @@
     <uses-permission android:name="android.permission.READ_SMS"/>
     <!--写入短信的权限-->
     <uses-permission android:name="android.permission.WRITE_SMS"/>
+
+    <uses-permission android:name="android.intent.action.MEDIA_MOUNTED"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/log"
@@ -58,8 +60,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.CommentPageActivity"/>
+        <activity android:name=".view.CommentPageActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_MOUNTED"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".view.DishesInfosActivity"/>
+        <activity android:name=".view.ClassNameListActivity"/>
+        <activity android:name=".view.MainActivity"/>
+        <activity android:name=".view.MyCollectActivity"/>
+        <activity android:name=".view.MyCollectInfoActivity"/>
+        <activity android:name=".view.HomeActivity"/>
+        <activity android:name=".view.CollectActivity"/>
     </application>
 
 </manifest>

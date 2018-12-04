@@ -1,9 +1,14 @@
 package com.example.geq.caipudemo.view;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -15,10 +20,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.example.geq.caipudemo.R;
+import com.example.geq.caipudemo.db.ImageUtils;
+import com.example.geq.caipudemo.tool.GetDrawable;
 import com.example.geq.caipudemo.tool.Http_comments;
 import com.example.geq.caipudemo.tool.Http_postComment;
-import com.example.geq.caipudemo.tool.getdrawable;
 import com.example.geq.caipudemo.vo.Comment;
 
 
@@ -26,7 +33,7 @@ import java.util.List;
 
 
 public class CommentPageActivity extends Activity implements View.OnClickListener {
-    private int menuid;
+    private String menuid;
     private TextView mName;
     private ImageView mIcon;
     private ListView mListView;
@@ -56,7 +63,39 @@ public class CommentPageActivity extends Activity implements View.OnClickListene
         mSend = findViewById(R.id.comment_but_send);
         //按钮点击发送操作
         mSend.setOnClickListener(this);
+        //图片长按点击事件
+       setOnImageLongClickListener();
     }
+
+
+    //长按点击事件
+    private void setOnImageLongClickListener() {
+        mIcon.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CommentPageActivity.this);
+                builder.setTitle("保存图片");
+                builder.setMessage("是否保存？");
+                builder.setPositiveButton("保存", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ImageUtils.saveCroppedImage(CommentPageActivity.this,drawable);
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //
+                    }
+                });
+                builder.show();
+                return true;
+            }
+        });
+    }
+
+
+
 
     //初始化数据，展示数据
     private void initData() {
@@ -64,14 +103,18 @@ public class CommentPageActivity extends Activity implements View.OnClickListene
         Intent intent = getIntent();
         //图片路径
         final String spic = intent.getStringExtra("spic");
-        menuid = intent.getIntExtra("menuid", 0);
-        if (menuid >= 0) {
-            Log.e("------------", "initData: " + menuid);
+        menuid = intent.getStringExtra("menuid");
+        getMenuId();
+        if (menuid != null) {
+            Log.e("---pl----", "initData: " + menuid);
             new Thread() {
                 @Override
                 public void run() {
-                    commentList = Http_comments.getcomments(1);
-                    getdrawable getdrawable = new getdrawable();
+                    int menuId = getMenuId();
+                    Log.e("---pl----", "anInt: " + menuId);
+                    commentList = Http_comments.getcomments(menuId);
+                    Log.e("---commentList----", "commentList: " + commentList.size());
+                    GetDrawable getdrawable = new GetDrawable();
                     drawable = getdrawable.getdrawable(spic, CommentPageActivity.this);
                     runOnUiThread(new Runnable() {
                         @Override
@@ -87,7 +130,13 @@ public class CommentPageActivity extends Activity implements View.OnClickListene
         }
     }
 
-
+    private int getMenuId() {
+        //获取传递管理的菜品id
+        Intent intent = getIntent();
+        String spic = intent.getStringExtra("spic");
+        String menuid = intent.getStringExtra("menuid");
+        return  Integer.valueOf(menuid);
+    }
 
 
     @Override
@@ -101,7 +150,8 @@ public class CommentPageActivity extends Activity implements View.OnClickListene
             // sendComment发送评论 ,true 成功 ，false 失败
             //menuid  菜谱编号
             //comment  评论内容
-            sendComment(1, comment);
+            int menuId = getMenuId();
+            sendComment(menuId, comment);
 
 
         }

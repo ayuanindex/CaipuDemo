@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:padding="8dp">
+
+	<ImageView
+		android:id="@+id/iv_logo"
+		android:layout_width="50dp"
+		android:layout_height="50dp"
+		android:layout_centerVertical="true"
+		android:background="@drawable/logo_bg"
+		android:src="@drawable/logo2" />
+
+	<TextView
+		android:id="@+id/tv_name"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:layout_marginLeft="8dp"
+		android:layout_toRightOf="@id/iv_logo"
+		android:text="菜品名称"
+		android:textColor="#000000"
+		android:textSize="18sp" />
+
+	<RatingBar
+		android:id="@+id/rb_pinfen"
+		style="?android:attr/ratingBarStyleSmall"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_centerInParent="true"
+		android:layout_centerVertical="true"
+		android:focusable="false"
+		android:isIndicator="true"
+		android:numStars="6"
+		android:rating="3" />
+
+</RelativeLayout>

@@ -24,7 +24,7 @@
     <!--菜谱图片-->
     <ImageView
         android:id="@+id/dishesinfos_iv_icon"
-        android:src="@drawable/hsr"
+        android:src="@drawable/image_haha"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>

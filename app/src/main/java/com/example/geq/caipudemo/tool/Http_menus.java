@@ -1,5 +1,7 @@
 package com.example.geq.caipudemo.tool;
 
+
+
 import com.example.geq.caipudemo.vo.Menuinfo;
 import com.example.geq.caipudemo.vo.Request_menu;
 
@@ -17,7 +19,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * 2.根据分类的 ID 检索菜谱列表
@@ -45,20 +46,20 @@ public class Http_menus {
             connection.setUseCaches(false);
             JSONObject object = new JSONObject();
             try {
-               // object.put("pagesize",""+request.getPagesize());
-                //object.put("stratid", ""+request.getStartid());
                 object.put("typeid",request.getTypeid());
+                object.put("startid",request.getStartid());
+                object.put("pagesize",request.getPagesize());
                 param = object.toString();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            System.out.println(param);
+            //  System.out.println(param);
             byte[] bytes = param.getBytes();
             connection.setRequestProperty("Content-Length", String.valueOf(bytes.length));
             OutputStream outputStream = connection.getOutputStream();
             outputStream.write(bytes);
             menuinfoList=new ArrayList<Menuinfo>();
-            System.out.println("code:   "+connection.getResponseCode());
+            //  System.out.println("code:   "+connection.getResponseCode());
             if (connection.getResponseCode() == 200) {
                 is = connection.getInputStream();
                 baos = new ByteArrayOutputStream();
@@ -69,7 +70,7 @@ public class Http_menus {
                 }
                 baos.flush();
                 String str = baos.toString();
-                System.out.println(str);
+                //   System.out.println(str);
                 JSONObject jsonObject = new JSONObject(str);
                 JSONArray menus = jsonObject.getJSONArray("menus");
                 for(int i=0;i<menus.length();i++){
@@ -102,18 +103,8 @@ public class Http_menus {
                     e.printStackTrace();
                 }
             }
-           return menuinfoList;
+            //  System.out.println(menuinfoList.size());
+            return menuinfoList;
         }
     }
-    private String JsonGet(String name, String pass) {
-        JSONObject object = new JSONObject();
-        try {
-            object.put("name", name);
-            object.put("pass", pass);
-            return object.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    }
+}

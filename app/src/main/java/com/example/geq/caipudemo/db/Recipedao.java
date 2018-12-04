@@ -162,8 +162,8 @@ public  class Recipedao {
             }
             menuDetail = new MenuDetail(collect.getString(2),collect.getString(3),collect.getString(4),collect.getString(5),collect.getString(6),collect.getString(7),collect.getString(0),collect.getString(1),collect.getString(8),stepList);
         }
-        if(db!=null)
-            db.close();
+//        if(db!=null)
+//            db.close();
         return menuDetail;
     }
 

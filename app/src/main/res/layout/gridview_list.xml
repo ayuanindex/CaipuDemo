@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:background="@android:drawable/gallery_thumb"
+	android:gravity="center_horizontal"
+	android:padding="5dp">
+
+	<ImageView
+		android:id="@+id/iv_logo"
+		android:layout_width="150dp"
+		android:layout_height="150dp"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="8dp"
+		android:src="@drawable/hsr" />
+
+	<TextView
+		android:id="@+id/tv_des"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/iv_logo"
+		android:text="分类名称"
+		android:textAlignment="center"
+		android:textColor="#000000"
+		android:textSize="16sp" />
+
+</RelativeLayout>

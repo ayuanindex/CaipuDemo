@@ -10,8 +10,12 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 
+import com.example.geq.caipudemo.view.CollectActivity;
 import com.example.geq.caipudemo.view.CommentPageActivity;
 import com.example.geq.caipudemo.view.DishesInfosActivity;
+import com.example.geq.caipudemo.view.HomeActivity;
+import com.example.geq.caipudemo.view.MainActivity;
+import com.example.geq.caipudemo.view.MyCollectActivity;
 
 public class SplashActivity extends Activity {
 
@@ -63,7 +67,7 @@ public class SplashActivity extends Activity {
         //动画结束时跳转 -  -首页
         @Override
         public void onAnimationEnd(Animation animation) {
-            Intent intent = new Intent(SplashActivity.this,DishesInfosActivity.class);
+            Intent intent = new Intent(SplashActivity.this,HomeActivity.class);
             startActivity(intent);
             finish();
         }
