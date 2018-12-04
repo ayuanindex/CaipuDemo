@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private NetworkInfo activeNetworkInfo;
     private String TAG = "MainActivity";
     private List<Vegetableinfo> vegetableinfoList;
+    private boolean netWorkAvailable;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -68,34 +69,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        netWorkAvailable = InternetUtils.isNetWorkAvailable(this);
         initUI();
         connectionJudgment();
     }
 
     private void connectionJudgment() {
-        boolean netWorkAvailable = InternetUtils.isNetWorkAvailable(this);
+
         if (netWorkAvailable) {
             initData();
         } else {
             Toast.makeText(this, "亲，您的网络没有连接哦", Toast.LENGTH_SHORT).show();
-            new Thread() {
-                @Override
-                public void run() {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressDialog = ProgressDialog.show(MainActivity.this, "请稍等...", "获取数据中...", true);
-                            SystemClock.sleep(2000);
-                            progressDialog.dismiss();
-                        }
-                    });
-
-                }
-            }.start();
             vegetableinfoList = inDatabase();
-
             Message message = Message.obtain();
-
             message.what = 0;
             mHandler.sendMessage(message);
         }
@@ -121,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initListener() {
+        if (netWorkAvailable){
         if (gv_class != null) {
             gv_class.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -137,6 +124,9 @@ public class MainActivity extends AppCompatActivity {
                     startActivityForResult(intent, 1);
                 }
             });
+        }
+        }else{
+            Toast.makeText(this, "亲，您的网络没有连接哦", Toast.LENGTH_SHORT).show();
         }
     }
 
