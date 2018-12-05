@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<TextView
+		android:id="@+id/textView"
+		style="@style/TitleStyle"
+		android:text="关于我们" />
+
+
+	<ImageView
+		android:id="@+id/imageView"
+		android:layout_width="93dp"
+		android:layout_height="84dp"
+		android:layout_marginStart="8dp"
+		android:layout_marginTop="40dp"
+		android:layout_marginEnd="8dp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="0.501"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/textView"
+		app:srcCompat="@drawable/logo" />
+
+	<TextView
+		android:id="@+id/textView9"
+		android:layout_width="0dp"
+		android:layout_height="19dp"
+		android:layout_marginStart="8dp"
+		android:layout_marginTop="20dp"
+		android:layout_marginEnd="8dp"
+		android:text="美心菜谱"
+		android:textAlignment="center"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="0.66"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+	<TextView
+		android:id="@+id/btn_call"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="8dp"
+		android:layout_marginTop="50dp"
+		android:layout_marginEnd="8dp"
+		android:background="@drawable/selector_call_btn_bg"
+		android:paddingLeft="40dp"
+		android:paddingTop="10dp"
+		android:paddingRight="40dp"
+		android:paddingBottom="10dp"
+		android:text="联系我们"
+		android:textColor="#ffffff"
+		android:textSize="13dp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+	<TextView
+		android:id="@+id/tv_developer"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="8dp"
+		android:layout_marginTop="28dp"
+		android:layout_marginEnd="8dp"
+		android:background="@drawable/selector_deve_btn_bg"
+		android:paddingLeft="40dp"
+		android:paddingTop="10dp"
+		android:paddingRight="40dp"
+		android:paddingBottom="10dp"
+		android:text="开发人员"
+		android:textColor="#ffffff"
+		android:textSize="13dp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/btn_call" />
+
+
+	<TextView
+		android:id="@+id/textView10"
+		android:layout_width="0dp"
+		android:layout_height="19dp"
+		android:layout_marginStart="8dp"
+		android:layout_marginEnd="8dp"
+		android:layout_marginBottom="20dp"
+		android:text="© 2018 Apple Inc."
+		android:textAlignment="center"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent" />
+
+	<TextView
+		android:id="@+id/tv_version"
+		android:layout_width="0dp"
+		android:layout_height="20dp"
+		android:layout_marginStart="8dp"
+		android:layout_marginTop="8dp"
+		android:layout_marginEnd="8dp"
+		android:text="版本号"
+		android:textAlignment="center"
+		android:textSize="10sp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+</android.support.constraint.ConstraintLayout>

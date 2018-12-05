@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    >
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="分类"
-        android:textSize="25sp"
-        android:textColor="#888"
-        />
-    <Button
-        android:id="@+id/bt_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
-        android:padding="2dp"
-        android:textSize="20dp"
-        android:layout_centerVertical="true"
-        android:text="菜单"
-        android:textColor="#fff"
-        android:background="#ccc"
-        android:layout_alignParentRight="true"
-        />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_alignParentBottom="true"
-        android:background="#ccc"
-        ></View>
-</RelativeLayout>
-    <GridView
-        android:id="@+id/gv_home"
-        android:layout_width="match_parent"
-        android:layout_weight="8"
-        android:layout_height="0dp"
-        android:numColumns="3"
-        >
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
 
-    </GridView>
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:text="分类"
+			android:textColor="#888"
+			android:textSize="25sp" />
+
+		<Button
+			android:id="@+id/bt_menu"
+			android:layout_width="30dp"
+			android:layout_height="30dp"
+			android:layout_alignParentRight="true"
+			android:layout_centerVertical="true"
+			android:layout_marginRight="20dp"
+			android:background="@drawable/setting"
+			android:padding="2dp"
+			android:textColor="#000000"
+			android:textSize="20dp" />
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="3dp"
+			android:layout_alignParentBottom="true"
+			android:background="#ccc"></View>
+	</RelativeLayout>
+
+	<GridView
+		android:id="@+id/gv_home"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="8"
+		android:numColumns="3">
+
+	</GridView>
 </LinearLayout>
