@@ -5,6 +5,7 @@
 	android:background="#ffffff"
 	android:orientation="vertical">
 
+
 	<TextView
 		android:id="@+id/tv_class_name"
 		style="@style/TitleStyle"
@@ -13,6 +14,5 @@
 	<ListView
 		android:id="@+id/lv_menu_item"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"></ListView>
-
+		android:layout_height="match_parent"></ListView>
 </LinearLayout>

@@ -2,7 +2,6 @@ package com.example.geq.caipudemo.view;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -53,7 +52,8 @@ public class HomeActivity extends Activity implements View.OnClickListener {
 					// 创建PopuWindow显示菜单
 					window = new PopupWindow(layout, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 					window.setBackgroundDrawable(new ColorDrawable());
-					window.setOutsideTouchable(true);;
+					window.setOutsideTouchable(true);
+					;
 					window.setFocusable(true);
 					window.showAsDropDown(bt_menu, 0, 0);
 				} else {

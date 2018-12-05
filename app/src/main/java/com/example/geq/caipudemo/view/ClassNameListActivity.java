@@ -108,7 +108,7 @@ public class ClassNameListActivity extends AppCompatActivity {
 	 * 从网络上获取数据，放到数据库中，图片加载到
 	 */
 	private void initData() {
-		getmenus.clear();
+		/*getmenus.clear();*/
 		if (typeid != null) {
 			request_menu = new Request_menu(Integer.parseInt(typeid), 1, 20);
 			new Thread() {
@@ -146,7 +146,7 @@ public class ClassNameListActivity extends AppCompatActivity {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View view;
+			final View view;
 			if (convertView == null) {
 				view = View.inflate(ClassNameListActivity.this, R.layout.menu_item, null);
 			} else {
@@ -163,8 +163,7 @@ public class ClassNameListActivity extends AppCompatActivity {
 
 			int likes = Integer.parseInt(getItem(position).getLikes());
 			int notLikes = Integer.parseInt(getItem(position).getNotlikes());
-			int i = (likes + notLikes) / likes;
-			rb_pinfen.setRating(i + 1);
+			rb_pinfen.setRating((float) ((float) (likes / notLikes * 1.5) - 1.23 - 2));
 
 			GetDrawable getDrawable = new GetDrawable();
 			String spic = getItem(position).getSpic();

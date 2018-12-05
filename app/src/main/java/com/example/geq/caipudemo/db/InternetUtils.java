@@ -25,8 +25,7 @@ public class InternetUtils {
      */
     public static boolean isNetWorkAvailable(Context context) {
         // 获得网络状态管理器
-        ConnectivityManager connectivityManager = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         if (connectivityManager == null) {
             return false;
