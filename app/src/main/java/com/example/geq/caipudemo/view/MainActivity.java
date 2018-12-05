@@ -1,5 +1,6 @@
 package com.example.geq.caipudemo.view;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,8 +13,10 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -67,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 
+		/*CustomDialog dialog = new CustomDialog(this, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, R.layout.dialog_loding, R.style.Theme_dialog, Gravity.CENTER, R.style.pop_anim_style);
+		//屏幕外点击无效
+		dialog.setCancelable(false);
+		dialog.show();*/
+
 		initUI();
 		connectionJudgment();
 	}
@@ -106,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
 		if (gv_class != null) {
 			gv_class.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				@SuppressLint("NewApi")
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					if (InternetUtils.isNetWorkAvailable(MainActivity.this)) {
@@ -178,26 +187,33 @@ public class MainActivity extends AppCompatActivity {
 			ImageView iv_logo = (ImageView) view.findViewById(R.id.iv_logo);
 			if (vegetableinfoList == null) {
 				//从数据库中获取数据来显示页面
-				Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.loding);
-				view.startAnimation(animation);
+				anim(view);
 				return view;
 			}
+			onView(position, view, tv_des, iv_logo);
+			return view;
+		}
+
+		private void onView(int position, final View view, TextView tv_des, final ImageView iv_logo) {
 			insertData(position);
 
 			String typename = getItem(position).getTypename();
 			tv_des.setText(typename);
 
 			String typepic = getItem(position).getTypepic();
-			Bitmap logo = GetDrawable.getBitmap(typepic, MainActivity.this);
+			final Bitmap logo = GetDrawable.getBitmap(typepic, MainActivity.this);
 
-			if (logo != null) {
-				iv_logo.setImageBitmap(logo);
-			} else {
-				iv_logo.setImageResource(R.drawable.image_haha);
-			}
-			Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.loding);
-			view.startAnimation(animation);
-			return view;
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if (logo != null) {
+						iv_logo.setImageBitmap(logo);
+					} else {
+						iv_logo.setImageResource(R.drawable.image_haha);
+					}
+					anim(view);
+				}
+			});
 		}
 
 		private boolean insertData(int position) {
@@ -208,6 +224,11 @@ public class MainActivity extends AppCompatActivity {
 			}
 			return false;
 		}
+	}
+
+	private void anim(View view) {
+		Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.loding);
+		view.startAnimation(animation);
 	}
 
 	/**

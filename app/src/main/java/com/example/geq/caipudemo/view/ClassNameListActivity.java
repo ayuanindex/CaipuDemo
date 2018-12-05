@@ -1,7 +1,7 @@
 package com.example.geq.caipudemo.view;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -39,6 +39,7 @@ public class ClassNameListActivity extends AppCompatActivity {
 	private String typename;
 	private String typeid;
 	private List<Menuinfo> getmenus = null;
+	private int startId = 1;
 
 	private Handler mHandler = new Handler() {
 		@Override
@@ -110,7 +111,7 @@ public class ClassNameListActivity extends AppCompatActivity {
 	private void initData() {
 		/*getmenus.clear();*/
 		if (typeid != null) {
-			request_menu = new Request_menu(Integer.parseInt(typeid), 1, 20);
+			request_menu = new Request_menu(Integer.parseInt(typeid), startId, 200);
 			new Thread() {
 				@Override
 				public void run() {
@@ -154,29 +155,46 @@ public class ClassNameListActivity extends AppCompatActivity {
 			}
 
 			if (getmenus == null) {
+				anim(view);
 				return view;
 			}
-
 			ImageView iv_logo = (ImageView) view.findViewById(R.id.iv_logo);
 			TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
 			RatingBar rb_pinfen = (RatingBar) view.findViewById(R.id.rb_pinfen);
 
-			int likes = Integer.parseInt(getItem(position).getLikes());
-			int notLikes = Integer.parseInt(getItem(position).getNotlikes());
-			rb_pinfen.setRating((float) ((float) (likes / notLikes * 1.5) - 1.23 - 2));
-
-			GetDrawable getDrawable = new GetDrawable();
-			String spic = getItem(position).getSpic();
-			Drawable getdrawable = getDrawable.getdrawable(spic, ClassNameListActivity.this);
-			iv_logo.setImageDrawable(getdrawable);
-
-			String menuname = getItem(position).getMenuname();
-			tv_name.setText(menuname);
-
-			Animation animation = AnimationUtils.loadAnimation(ClassNameListActivity.this, R.anim.loding);
-			view.startAnimation(animation);
+			onView(position, view, iv_logo, tv_name, rb_pinfen);
+			Log.i(TAG, "哈哈" + String.valueOf(position));
 			return view;
 		}
+
+		private void onView(final int position, final View view, final ImageView iv_logo, final TextView tv_name, final RatingBar rb_pinfen) {
+			new Thread() {
+				@Override
+				public void run() {
+					super.run();
+					final int likes = Integer.parseInt(getItem(position).getLikes());
+					final int notLikes = Integer.parseInt(getItem(position).getNotlikes());
+					String spic = getItem(position).getSpic();
+					final Bitmap getbitmap = GetDrawable.getBitmap(spic, ClassNameListActivity.this);
+					final String menuname = getItem(position).getMenuname();
+
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							rb_pinfen.setRating((float) ((float) (likes / notLikes * 1.5) - 1.23 - 2));
+							iv_logo.setImageBitmap(getbitmap);
+							tv_name.setText(menuname);
+							anim(view);
+						}
+					});
+				}
+			}.start();
+		}
+	}
+
+	private void anim(View view) {
+		Animation animation = AnimationUtils.loadAnimation(ClassNameListActivity.this, R.anim.loding);
+		view.startAnimation(animation);
 	}
 
 	@Override
