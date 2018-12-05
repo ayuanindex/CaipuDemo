@@ -13,10 +13,8 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -45,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 	private NetworkInfo activeNetworkInfo;
 	private String TAG = "MainActivity";
 	private List<Vegetableinfo> vegetableinfoList;
+	private SQLiteDatabase readableDatabase;
+	private Recipedao recipedao;
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -52,17 +52,22 @@ public class MainActivity extends AppCompatActivity {
 			int what = msg.what;
 			switch (what) {
 				case 0:
+					if (vegetableinfoList == null) {
+						if(recipedao==null){
+							recipedao=new Recipedao(getApplicationContext());
+						}
+						vegetableinfoList=recipedao.select_types();
+						if(vegetableinfoList == null) {
+							Toast.makeText(MainActivity.this, "获取数据不成功", Toast.LENGTH_SHORT).show();
+						}
+					}
 					MyGridViewAdapter myGridViewAdapter = new MyGridViewAdapter();
 					gv_class.setAdapter(myGridViewAdapter);
-					if (vegetableinfoList == null) {
-						Toast.makeText(MainActivity.this, "获取数据不成功", Toast.LENGTH_SHORT).show();
-					}
+
 					break;
 			}
 		}
 	};
-	private SQLiteDatabase readableDatabase;
-	private Recipedao recipedao;
 
 
 	@Override
@@ -187,16 +192,17 @@ public class MainActivity extends AppCompatActivity {
 			ImageView iv_logo = (ImageView) view.findViewById(R.id.iv_logo);
 			if (vegetableinfoList == null) {
 				//从数据库中获取数据来显示页面
-				anim(view);
-				return view;
+					anim(view);
+					return view;
 			}
 			onView(position, view, tv_des, iv_logo);
 			return view;
 		}
 
 		private void onView(int position, final View view, TextView tv_des, final ImageView iv_logo) {
-			insertData(position);
-
+			if (!recipedao.issavetypes()) {
+				insertData(position);
+			}
 			String typename = getItem(position).getTypename();
 			tv_des.setText(typename);
 
@@ -235,13 +241,13 @@ public class MainActivity extends AppCompatActivity {
 	 * 在没有网络的情况下，使用数据库里面的数据进行数据展示
 	 */
 	private List<Vegetableinfo> inDatabase() {
-		if (recipedao != null) {
-			List<Vegetableinfo> vegetableinfos = recipedao.select_types();
-			return vegetableinfos;
-		} else {
-			recipedao = new Recipedao(this);
-			List<Vegetableinfo> vegetableinfos = recipedao.select_types();
-			return vegetableinfos;
-		}
+	List<Vegetableinfo> vegetableinfos=new ArrayList<Vegetableinfo>();
+				if (recipedao != null) {
+					 vegetableinfos = recipedao.select_types();
+				} else {
+					recipedao = new Recipedao(MainActivity.this);
+					vegetableinfos = recipedao.select_types();
+				}
+		return vegetableinfos;
 	}
 }

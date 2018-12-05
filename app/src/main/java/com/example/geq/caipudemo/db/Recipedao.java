@@ -56,7 +56,7 @@ public  class Recipedao {
         SQLiteDatabase db = recipeOpenhelp.getWritableDatabase();
         Cursor types = db.query("types", new String[]{"typeid", "typename", "description", "typeic"}, null, null, null, null, null);
         vegetableinfoList=new ArrayList<Vegetableinfo>();
-        if(types.getCount()!=0){
+        if(types!=null){
             while (types.moveToNext()){
                 Vegetableinfo vegetableinfo = new Vegetableinfo(types.getString(3), types.getString(2), types.getString(0), types.getString(1));
                 vegetableinfoList.add(vegetableinfo);

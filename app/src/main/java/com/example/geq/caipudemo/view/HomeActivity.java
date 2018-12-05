@@ -139,10 +139,11 @@ public class HomeActivity extends Activity implements View.OnClickListener {
 				break;
 			//使用帮助
 			case R.id.tv_menu2:
-				intent = new Intent(getApplicationContext(), MyCollectInfoActivity.class);
-				startActivity(intent);
-				window.dismiss();
-				window = null;
+//				intent = new Intent(getApplicationContext(), MyCollectInfoActivity.class);
+//				startActivity(intent);
+//				window.dismiss();
+//				window = null;
+				Toast.makeText(this, "该功能尚未开放", Toast.LENGTH_SHORT).show();
 				break;
 			//关于我们
 			case R.id.tv_menu3:

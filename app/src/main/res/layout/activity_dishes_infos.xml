@@ -1,155 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/dishesinfos_tv_name"
-            android:text="红烧肉"
-            style="@style/ActivtyItemStyle" />
-        <ImageView
-            android:id="@+id/dishesinfos_iv_collect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/notlike"
-            android:layout_gravity="right|center"
-            android:layout_marginRight="10dp"
-            android:clickable="true"
-            />
-    </FrameLayout>
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
 
-    <!--菜谱图片-->
-    <ImageView
-        android:id="@+id/dishesinfos_iv_icon"
-        android:src="@drawable/image_haha"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
-    <!--菜谱简介-->
-    <RelativeLayout
-        android:padding="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_marginLeft="8dp"
-            android:id="@+id/dishesinfos_tv_type"
-            android:text="鲁菜"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
+		<TextView
+			android:id="@+id/dishesinfos_tv_name"
+			style="@style/ActivtyItemStyle"
+			android:text="红烧肉" />
 
-            android:layout_centerHorizontal="true"
-            android:text="菜品名称"
-            android:textSize="18dp"
-            android:textColor="#000000"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-       <LinearLayout
-           android:layout_marginLeft="8dp"
-           android:layout_marginTop="18dp"
-           android:layout_below="@id/dishesinfos_tv_type"
-           android:orientation="vertical"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
-           <TextView
-               android:textColor="#000000"
-               android:text="菜谱简介:"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" />
-           <TextView
-               android:textColor="#000000"
-               android:id="@+id/dishesinfos_tv_info"
-               android:layout_marginTop="5dp"
-               android:text="1、盆中装入凉水，加入一大勺料酒，，捞出。"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" />
-           <TextView
-               android:textColor="#000000"
-               android:layout_marginTop="8dp"
-               android:text="食材清单:"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" />
-           <TextView
-               android:textColor="#000000"
-               android:id="@+id/dishesinfos_tv_foods"
-               android:layout_marginTop="5dp"
-               android:text="带皮五花肉60、老抽1汤匙、生抽1汤匙（15ml）、盐1小匙。"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" />
-       </LinearLayout>
-    </RelativeLayout>
-    <!--菜谱做法-->
+		<ImageView
+			android:id="@+id/dishesinfos_iv_collect"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="right|center"
+			android:layout_marginRight="10dp"
+			android:clickable="true"
+			android:src="@drawable/notlike" />
+	</FrameLayout>
 
-    <ListView
-        android:padding="8dp"
-        android:id="@+id/dishesinfos_lv_listview"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-    </ListView>
+	<!--菜谱图片-->
+	<ImageView
+		android:id="@+id/dishesinfos_iv_icon"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		android:src="@drawable/image_haha" />
 
-    <!--评论，喜欢，不喜欢 -->
-    <LinearLayout
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
-        android:background="#bebaba"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+			<!--菜谱简介-->
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="8dp">
 
-        android:gravity="center"
-        android:orientation="horizontal">
-        <LinearLayout
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/dishesinfos_iv_evaluate"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/selector_dishes_like" />
-            <TextView
-                android:text="评论"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
+				<TextView
+					android:id="@+id/dishesinfos_tv_type"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="8dp"
+					android:text="鲁菜" />
 
-        <Button
-            android:id="@+id/dishesinfos_iv_like"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/notlike" />
-            <TextView
-                android:text="喜欢"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/dishesinfos_iv_unlike"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/notlike" />
-            <TextView
-                android:text="不喜欢"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </LinearLayout>
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerHorizontal="true"
+					android:text="菜品名称"
+					android:textColor="#000000"
+					android:textSize="18dp" />
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/dishesinfos_tv_type"
+					android:layout_marginLeft="8dp"
+					android:layout_marginTop="18dp"
+					android:orientation="vertical">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="菜谱简介:"
+						android:textColor="#000000" />
+
+					<TextView
+						android:id="@+id/dishesinfos_tv_info"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="5dp"
+						android:text="1、盆中装入凉水，加入一大勺料酒，，捞出。"
+						android:textColor="#000000" />
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="8dp"
+						android:text="食材清单:"
+						android:textColor="#000000" />
+
+					<TextView
+						android:id="@+id/dishesinfos_tv_foods"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="5dp"
+						android:text="带皮五花肉60、老抽1汤匙、生抽1汤匙（15ml）、盐1小匙。"
+						android:textColor="#000000" />
+				</LinearLayout>
+			</RelativeLayout>
+			<!--菜谱做法-->
+
+			<ListView
+				android:id="@+id/dishesinfos_lv_listview"
+				android:layout_width="match_parent"
+				android:layout_height="0dp"
+				android:layout_weight="1"
+				android:padding="8dp"></ListView>
+		</LinearLayout>
+	</ScrollView>
+
+	<!--评论，喜欢，不喜欢 -->
+	<LinearLayout
+
+		android:layout_width="match_parent"
+		android:layout_height="70dp"
+		android:background="#bebaba"
+
+		android:gravity="center"
+		android:orientation="horizontal">
+
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:gravity="center"
+			android:orientation="vertical">
+
+			<Button
+				android:id="@+id/dishesinfos_iv_evaluate"
+				android:layout_width="30dp"
+				android:layout_height="30dp"
+				android:background="@drawable/selector_dishes_like" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="评论" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:gravity="center"
+			android:orientation="vertical">
+
+			<Button
+				android:id="@+id/dishesinfos_iv_like"
+				android:layout_width="30dp"
+				android:layout_height="30dp"
+				android:background="@drawable/notlike" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="喜欢" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:gravity="center"
+			android:orientation="vertical">
+
+			<Button
+				android:id="@+id/dishesinfos_iv_unlike"
+				android:layout_width="30dp"
+				android:layout_height="30dp"
+				android:background="@drawable/notlike" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="不喜欢" />
+		</LinearLayout>
+	</LinearLayout>
 
 </LinearLayout>
